@@ -30,10 +30,12 @@ public class CustomRunContextConfig extends ContextConfig {
 
     /*In order to have the ServletContainerInitializer scanned using the classpath and not using resources path,
     we need to clear the ORDERED_LIBS attribtues of the ServletContext before the scan*/
-    protected void processServletContainerInitializers(ServletContext servletContext) {
+    protected void processServletContainerInitializers() {
+        ServletContext servletContext = this.context.getServletContext();
         List saveOrderedLib = (List) servletContext.getAttribute(ServletContext.ORDERED_LIBS);
         servletContext.setAttribute(ServletContext.ORDERED_LIBS, null);
-        super.processServletContainerInitializers(servletContext);
+        super.processServletContainerInitializers();
+        servletContext = this.context.getServletContext();
         servletContext.setAttribute(ServletContext.ORDERED_LIBS, saveOrderedLib);
     }
 
